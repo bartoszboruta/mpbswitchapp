@@ -1,22 +1,52 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, ScrollView, Text, TouchableOpacity, Dimensions, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
+import { dashboardActions } from "../../actions";
 
 class Dashboard extends React.Component {
     constructor(props) {
         super(props);
     }
 
+    getDashboardSummary() {
+        this.props.dispatch(dashboardActions.get());
+    }
+
+    componentDidMount() {
+        this.getDashboardSummary();
+    }
+
+    onRefreshHandler() {
+        this.props.dispatch(dashboardActions.get());
+    }
+
     render() {
         const { navigate } = this.props.navigation;
+        console.log(this.props.summary)
 
         return (
             <View style={styles.container}>
-                <ScrollView>
-                    <Text>
-                        Dashboard
-                    </Text>
+                <ScrollView refreshControl={
+                    <RefreshControl refreshing={this.props.summary.loading}
+                                onRefresh={ this.onRefreshHandler.bind(this) }
+                    />
+                }>
+                    {
+                        this.props.summary.data.map((summary, key) => {
+                            return <TouchableOpacity
+                                    key={key}
+                                    style={ StyleSheet.flatten([styles.card, { backgroundColor: summary.backgroundColor }]) }
+                                >
+                                    <View tyle={styles.iconContainer}>
+                                        <Ionicons
+                                            name={ summary.icon }
+                                            style={ styles.icon }
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                        })
+                    }
                 </ScrollView>
             </View>
         );
@@ -24,41 +54,39 @@ class Dashboard extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    actionButtonIcon: {
-        fontSize: 25,
-        height: 25,
-        color: 'white',
-    },
-    stateIcon: {
-        fontSize: 66,
-        height: 66,
-        color: 'white',
-    },
     container: {
         flex: 1,
         backgroundColor: '#2e353e',
     },
-    list: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        padding: 16,
-        justifyContent: 'space-between'
+    card: {
+        flexDirection: 'column',
+        flex: 1,
+        elevation: 5,
+        padding: 5,
+        borderRadius: 5,
+        height: Dimensions.get('window').height * 0.2,
+        marginBottom: 5,
+        marginTop: 5,
+        width: Dimensions.get('window').width * 0.95,
+        alignSelf: 'center',
+        justifyContent: 'center',
     },
-    item: {
-        width: '48%',
-        borderWidth: 1,
-        borderColor: 'lightgray',
+    icon: {
+        fontSize: Dimensions.get('window').height * 0.15,
+        color: '#ffffff'
+    },
+    iconContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        aspectRatio: 1,
-        marginBottom: 16
+        width: Dimensions.get('window').height * 0.2,
     }
 });
 
 function mapStateToProps(state) {
-    const { device } = state;
+    const { device, summary } = state;
     return {
-        device
+        device,
+        summary
     };
 }
 

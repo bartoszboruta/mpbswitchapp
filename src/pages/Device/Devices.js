@@ -11,15 +11,11 @@ class Devices extends React.Component {
         super(props);
     }
 
-    componentDidMount() {
-        this.props.dispatch(deviceActions.filter());
-    }
-
     getDevices() {
         this.props.dispatch(deviceActions.index());
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getDevices();
     }
 
