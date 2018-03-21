@@ -3,7 +3,6 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import { Home }from '../pages/Home';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
-import { Dashboard } from '../pages/Dashboard';
 import { Profile } from '../pages/Profile';
 import { Devices, AddDevice, Device } from '../pages/Device';
 
@@ -50,14 +49,6 @@ export const _AddDevice = StackNavigator({
 
 export const _LoggedIn = TabNavigator(
     {
-        Dashboard: {
-            screen: Dashboard,
-            tabBarOptions: {
-            },
-            navigationOptions: {
-                tabBarLabel: "Dashboard"
-            }
-        },
         Devices: {
             screen: Devices,
             navigationOptions: {
