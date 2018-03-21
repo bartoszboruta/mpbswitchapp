@@ -103,12 +103,12 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { user } = state;
     return {
         user,
     };
-}
+};
 
 const connectedProfilePage = connect(mapStateToProps)(Profile);
 export { connectedProfilePage as Profile }

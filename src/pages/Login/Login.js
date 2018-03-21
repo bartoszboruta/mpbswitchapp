@@ -3,7 +3,6 @@ import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { authActions } from '../../actions';
-import Logo from '../../components/Logo/Logo';
 import { emailValidate } from '../../utils';
 
 class Login extends React.Component {
@@ -75,8 +74,6 @@ class Login extends React.Component {
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
-                <Logo />
-
                 <View>
                     <FormLabel>Email</FormLabel>
                     <FormInput
@@ -116,12 +113,12 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { auth } = state;
     return {
         auth
     };
-}
+};
 
 const connectedLoginPage = connect(mapStateToProps)(Login);
 export { connectedLoginPage as Login }

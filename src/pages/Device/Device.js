@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { device } = state;
     return {
         device
     };
-}
+};
 
 const connectedDevicePage = connect(mapStateToProps)(Device);
 export { connectedDevicePage as Device }

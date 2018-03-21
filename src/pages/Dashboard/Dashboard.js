@@ -23,8 +23,7 @@ class Dashboard extends React.Component {
 
     render() {
         const { navigate } = this.props.navigation;
-        console.log(this.props.summary)
-
+        return null;
         return (
             <View style={styles.container}>
                 <ScrollView refreshControl={
@@ -82,7 +81,7 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { device, summary } = state;
     return {
         device,

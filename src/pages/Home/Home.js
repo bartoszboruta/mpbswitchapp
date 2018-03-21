@@ -40,12 +40,12 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const {} = state;
     return {
 
     };
-}
+};
 
 const connectedHomePage = connect(mapStateToProps)(Home);
 export { connectedHomePage as Home }

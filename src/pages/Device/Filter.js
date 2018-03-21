@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { FormInput } from 'react-native-elements';
+import { SearchBar } from 'react-native-elements';
 import { deviceActions } from "../../actions";
 
 class Filter extends Component {
@@ -10,7 +10,7 @@ class Filter extends Component {
 
     render() {
         return (
-            <FormInput
+            <SearchBar
                 onChangeText={this.handleChange.bind(this)}
             />
         );

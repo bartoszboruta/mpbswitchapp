@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { user } = state;
     return {
         user

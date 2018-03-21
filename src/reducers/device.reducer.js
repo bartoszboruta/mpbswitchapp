@@ -4,6 +4,7 @@ import _ from 'lodash';
 const initialState = {
     devices: [],
     filteredDevices: [],
+    filterQuery: '',
     loading: false,
     selected: {}
 };
@@ -21,7 +22,8 @@ export function device(state = initialState, action) {
                 ...state,
                 filteredDevices: _.filter(state.devices, (device) => {
                     return _.includes(_.toUpper(device.name), _.toUpper(action.payload));
-                })
+                }),
+                filterQuery: action.payload,
             };
         case deviceTypes.INDEX_REQUEST:
             return {

@@ -27,7 +27,6 @@ function add(fields) {
                     }
                 },
                 error => {
-                    console.log('err', error);
                     dispatch(failure(error));
                 }
             )
@@ -44,7 +43,7 @@ function add(fields) {
     }
 }
 
-function index() {
+function index(filterQuery) {
     return dispatch => {
         dispatch(request());
 
@@ -59,6 +58,7 @@ function index() {
                         return;
                     }
                     dispatch(success(devices));
+                    dispatch({ type: deviceTypes.FILTER, payload: filterQuery });
                 },
                 error => {
                     dispatch(failure(error));
@@ -77,7 +77,7 @@ function index() {
     }
 }
 
-function updateStatus(device, status) {
+function updateStatus(device, status, filterQuery) {
     return dispatch => {
         dispatch(request());
 
@@ -86,6 +86,7 @@ function updateStatus(device, status) {
                 status => {
                     if (!device.error) {
                         dispatch(success(device, status));
+                        dispatch({ type: deviceTypes.FILTER, payload: filterQuery });
                     }
                 },
                 error => {

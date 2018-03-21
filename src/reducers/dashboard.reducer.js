@@ -1,7 +1,9 @@
 import { dashboardTypes } from '../types';
 
 const initialState = {
-    data: [],
+    summary: {
+        data: []
+    },
     loading: false
 };
 
@@ -15,7 +17,7 @@ export function summary(state = initialState, action) {
         case dashboardTypes.SUMMARY_SUCCESS:
             return {
                 ...state,
-                data: action.payload,
+                summary: action.payload,
                 loading: false,
             };
         case dashboardTypes.SUMMARY_FAILURE:

@@ -12,7 +12,7 @@ class Devices extends React.Component {
     }
 
     getDevices() {
-        this.props.dispatch(deviceActions.index());
+        this.props.dispatch(deviceActions.index(this.props.device.filterQuery));
     }
 
     componentDidMount() {
@@ -29,15 +29,40 @@ class Devices extends React.Component {
 
     onStatusUpdateClickHandler(device) {
         const status = device.status.data === "0" ? "1" : "0";
-        this.props.dispatch(deviceActions.updateStatus(device, status));
+        this.props.dispatch(deviceActions.updateStatus(device, status, this.props.device.filterQuery));
     }
 
     getStatusColor(status) {
-        if (this.props.device.loading) {
-            // return '#fafad2';
-        }
-
         return status === "0" ? "#696969" : "#5BC088";
+    }
+
+    devices() {
+        const { navigate } = this.props.navigation;
+
+        return this.props.device.filteredDevices.map((device, key) => {
+            console.log(this.props.device.filterQuery);
+            return (
+                <TouchableOpacity
+                    key={key}
+                    style={styles.item}
+                    onPress={ () => this.onStatusUpdateClickHandler(device) }
+                    onLongPress ={() => {
+                        this.props.dispatch(deviceActions.select(device._id));
+                        navigate('Device', { device: device._id })
+                    }}
+                >
+                    <Ionicons
+                        name="ios-power"
+                        style={ StyleSheet.flatten([styles.statusIcon, { color: this.getStatusColor(device.status.data) }]) }
+                    />
+                    <Text style={ styles.deviceName } >
+                        {
+                            device.name
+                        }
+                    </Text>
+                </TouchableOpacity>
+            )
+        })
     }
 
     render() {
@@ -47,39 +72,17 @@ class Devices extends React.Component {
                 <Filter />
                 <ScrollView refreshControl={
                     <RefreshControl refreshing={this.props.device.loading}
-                        onRefresh={ this.onRefreshHandler.bind(this) }
+                        onRefresh={ () => this.onRefreshHandler }
                     />
                 }>
                     <View style={styles.list}>
                         {
-                            this.props.device.devices.map((device, key) => {
-                                return (
-                                    <TouchableOpacity
-                                        key={key}
-                                        style={styles.item}
-                                        onPress={ this.onStatusUpdateClickHandler.bind(this, device) }
-e                                       onLongPress ={() => {
-                                            this.props.dispatch(deviceActions.select(device._id));
-                                            navigate('Device', { device: device._id })
-                                        }}
-                                    >
-                                        <Ionicons
-                                            name="ios-power"
-                                            style={ StyleSheet.flatten([styles.statusIcon, { color: this.getStatusColor(device.status.data) }]) }
-                                        />
-                                        <Text style={ styles.deviceName } >
-                                            {
-                                                device.name
-                                            }
-                                        </Text>
-                                    </TouchableOpacity>
-                                )
-                            })
+                            this.devices()
                         }
                     </View>
                 </ScrollView>
                 <ActionButton buttonColor="rgba(231,76,60,1)">
-                    <ActionButton.Item buttonColor='#1abc9c' title="Refresh" onPress={ this.onRefreshClickHandler.bind(this) }>
+                    <ActionButton.Item buttonColor='#1abc9c' title="Refresh" onPress={() => this.onRefreshClickHandler }>
                         <Ionicons name="ios-refresh" style={ styles.actionButtonIcon }/>
                     </ActionButton.Item>
                     <ActionButton.Item buttonColor='#3498db' title="Switch all" onPress={() => {}}>
@@ -111,6 +114,7 @@ const styles = StyleSheet.create({
     item: {
         width: '48%',
         borderWidth: 1,
+        borderRadius: 5,
         borderColor: 'lightgray',
         alignItems: 'center',
         justifyContent: 'center',
@@ -129,13 +133,13 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { user, device } = state;
     return {
         user,
         device
     };
-}
+};
 
 const connectedDevicesPage = connect(mapStateToProps)(Devices);
 export { connectedDevicesPage as Devices }
