@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { SearchBar } from 'react-native-elements';
-import { deviceActions } from "../../actions";
-import { bindActionCreators } from "redux";
+import { deviceActions } from '../../actions';
+import { bindActionCreators } from 'redux';
 
 class Filter extends Component {
     handleChange(e) {

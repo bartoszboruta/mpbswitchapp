@@ -3,8 +3,8 @@ import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
-import { userActions} from "../../actions";
-import { bindActionCreators } from "redux";
+import { userActions} from '../../actions';
+import { bindActionCreators } from 'redux';
 
 class EditUser extends React.Component {
     constructor(props) {
@@ -55,30 +55,28 @@ class EditUser extends React.Component {
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <FormLabel>Name</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
-                    name="name"
-                    returnKeyType="next"
+                    underlineColorAndroid='#cccccc'
+                    name='name'
+                    returnKeyType='next'
                     onChangeText={this.onNameChangeHandler.bind(this)}
                     value={this.state.user.name}
                 />
                 <FormLabel>Email</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
-                    name="email"
-                    returnKeyType="next"
+                    underlineColorAndroid='#cccccc'
+                    name='email'
+                    returnKeyType='next'
                     onChangeText={this.onEmailChangeHandler.bind(this)}
                     value={this.state.user.email}
                 />
                 <Button
                     buttonStyle={styles.button}
                     onPress={this.handleSubmit.bind(this)}
-                    title="SUBMIT"
+                    title='SUBMIT'
                 />
             </KeyboardAvoidingView>
         );

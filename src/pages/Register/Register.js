@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
-import { userActions } from "../../actions";
+import { userActions } from '../../actions';
 import { bindActionCreators } from 'redux';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
@@ -53,33 +53,33 @@ class Register extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
+            <KeyboardAvoidingView behavior='padding' style={styles.container}>
                 <FormLabel>Email</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
+                    underlineColorAndroid='#cccccc'
                     inputStyle={styles.button}
-                    name="email"
+                    name='email'
                     onChangeText={this.handleEmailChange.bind(this)}
                 />
                 <FormLabel>Name</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
-                    name="name"
-                    returnKeyType="next"
+                    underlineColorAndroid='#cccccc'
+                    name='name'
+                    returnKeyType='next'
                     onChangeText={this.handleNameChange.bind(this)}
                 />
                 <FormLabel>Password</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
+                    underlineColorAndroid='#cccccc'
                     inputStyle={styles.button}
-                    name="password"
+                    name='password'
                     onChangeText={this.handlePasswordChange.bind(this)}
                     secureTextEntry
                 />
                 <Button
                     buttonStyle={styles.button}
                     onPress={this.handleSubmit.bind(this)}
-                    title="Register"
+                    title='Register'
                 />
             </KeyboardAvoidingView>
         );

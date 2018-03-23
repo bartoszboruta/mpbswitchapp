@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { deviceActions } from "../../actions";
+import { deviceActions } from '../../actions';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 
@@ -57,28 +57,28 @@ class AddDevice extends React.Component {
             <View style={styles.container}>
                 <FormLabel>Name</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
-                    name="name"
-                    returnKeyType="next"
+                    underlineColorAndroid='#cccccc'
+                    name='name'
+                    returnKeyType='next'
                     onChangeText={this.handleNameChange.bind(this)}
                 />
                 <FormLabel>Serial</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
-                    name="serial"
+                    underlineColorAndroid='#cccccc'
+                    name='serial'
                     onChangeText={this.handleSerialChange.bind(this)}
                 />
                 <FormLabel>Password</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
-                    name="password"
+                    underlineColorAndroid='#cccccc'
+                    name='password'
                     onChangeText={this.handlePasswordChange.bind(this)}
                     secureTextEntry
                 />
                 <Button
                     buttonStyle={styles.button}
                     onPress={this.handleSubmit.bind(this)}
-                    title="Add device"
+                    title='Add device'
                 />
             </View>
         );

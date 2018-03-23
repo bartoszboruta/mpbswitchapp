@@ -3,10 +3,10 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity, RefreshControl } 
 import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
 import ActionButton from 'react-native-action-button';
-import { deviceActions } from "../../actions";
-import { Filter } from "./Filter";
-import { DeviceStatus } from "../../components/DeviceStatus";
-import { bindActionCreators } from "redux";
+import { deviceActions } from '../../actions';
+import { Filter } from './Filter';
+import { DeviceStatus } from '../../components/DeviceStatus';
+import { bindActionCreators } from 'redux';
 
 class Devices extends React.Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class Devices extends React.Component {
     }
 
     onStatusUpdateClickHandler(device) {
-        const status = device.status.data === "0" ? "1" : "0";
+        const status = device.status.data === '0' ? '1' : '0';
         this.props.updateStatus(device, status);
     }
 
@@ -78,12 +78,12 @@ class Devices extends React.Component {
                         }
                     </View>
                 </ScrollView>
-                <ActionButton buttonColor="rgba(231,76,60,1)">
-                    <ActionButton.Item buttonColor='#1abc9c' title="Refresh" onPress={ this.onRefreshClickHandler.bind(this) }>
-                        <Ionicons name="ios-refresh" style={ styles.actionButtonIcon }/>
+                <ActionButton buttonColor='rgba(231,76,60,1)'>
+                    <ActionButton.Item buttonColor='#1abc9c' title='Refresh' onPress={ this.onRefreshClickHandler.bind(this) }>
+                        <Ionicons name='ios-refresh' style={ styles.actionButtonIcon }/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#0085c2' title="Add device" onPress={() => {navigate('AddDevices')}}>
-                        <Ionicons name="ios-add" style={ styles.actionButtonIcon }/>
+                    <ActionButton.Item buttonColor='#0085c2' title='Add device' onPress={() => {navigate('AddDevices')}}>
+                        <Ionicons name='ios-add' style={ styles.actionButtonIcon }/>
                     </ActionButton.Item>
                 </ActionButton>
             </View>

@@ -3,8 +3,8 @@ import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
-import { deviceActions } from "../../actions";
-import { bindActionCreators } from "redux";
+import { deviceActions } from '../../actions';
+import { bindActionCreators } from 'redux';
 
 class Device extends React.Component {
     constructor(props) {
@@ -53,16 +53,16 @@ class Device extends React.Component {
             <KeyboardAvoidingView style={styles.container}>
                 <FormLabel>Name</FormLabel>
                 <FormInput
-                    underlineColorAndroid="#cccccc"
-                    name="name"
-                    returnKeyType="next"
+                    underlineColorAndroid='#cccccc'
+                    name='name'
+                    returnKeyType='next'
                     onChangeText={this.onNameChangeHandler.bind(this)}
                     value={this.state.device.name}
                 />
                 <Button
                     buttonStyle={styles.button}
                     onPress={this.handleSubmit.bind(this)}
-                    title="SUBMIT"
+                    title='SUBMIT'
                 />
             </KeyboardAvoidingView>
         );

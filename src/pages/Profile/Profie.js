@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { authActions, userActions } from "../../actions";
+import { authActions, userActions } from '../../actions';
 import { Ionicons } from 'react-native-vector-icons';
-import {bindActionCreators} from "redux";
+import {bindActionCreators} from 'redux';
 
 class Profile extends React.Component {
     constructor(props) {
@@ -38,10 +38,10 @@ class Profile extends React.Component {
             <View style={styles.container}>
                 <View style={styles.action}>
                     <TouchableOpacity style={styles.actionItemContainer} onPress={this.handleLogout.bind(this)}>
-                        <Ionicons name="md-log-out" style={styles.actionItem}/>
+                        <Ionicons name='md-log-out' style={styles.actionItem}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.actionItemContainer} onPress={() => navigate('EditUser')}>
-                        <Ionicons name="ios-settings" style={styles.actionItem}/>
+                        <Ionicons name='ios-settings' style={styles.actionItem}/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.summary}>
