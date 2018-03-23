@@ -48,7 +48,6 @@ async function updateData(device) {
             return devices;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 
@@ -94,7 +93,6 @@ async function add(fields) {
             return devices;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 
@@ -132,7 +130,6 @@ async function index() {
             return devices;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 
@@ -177,6 +174,5 @@ async function updateStatus(device, status) {
             return device;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }

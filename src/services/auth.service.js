@@ -35,7 +35,6 @@ function login(email, password) {
             return auth;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 

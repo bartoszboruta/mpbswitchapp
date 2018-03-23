@@ -37,7 +37,6 @@ async function add(fields) {
             return user;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 
@@ -75,7 +74,6 @@ async function show() {
             return user;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 
@@ -118,6 +116,5 @@ async function edit(user) {
             return user;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
