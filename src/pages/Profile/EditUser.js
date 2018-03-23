@@ -3,7 +3,8 @@ import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
-import { userActions } from "../../actions";
+import { userActions} from "../../actions";
+import { bindActionCreators } from "redux";
 
 class EditUser extends React.Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class EditUser extends React.Component {
         headerTitleStyle: {
             color: 'white'
         },
-        title: 'EditUser',
+        title: 'Edit user',
         headerLeft: <Ionicons style={{marginLeft: 15}} size={25} name='md-arrow-back' onPress={ () => {navigation.goBack(null)} }  />,
     });
 
@@ -50,7 +51,7 @@ class EditUser extends React.Component {
     }
 
     handleSubmit() {
-        this.props.dispatch(userActions.edit(this.state.user));
+        this.props.edit(this.state.user);
     }
 
     render() {
@@ -101,5 +102,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const connectedEditUserPage = connect(mapStateToProps)(EditUser);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    edit: userActions.edit,
+}, dispatch);
+
+const connectedEditUserPage = connect(mapStateToProps, mapDispatchToProps)(EditUser);
 export { connectedEditUserPage as EditUser }

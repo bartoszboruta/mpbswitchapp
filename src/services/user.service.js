@@ -102,7 +102,6 @@ async function edit(user) {
             name: user.name,
         })
     };
-    console.log(requestOptions)
     return fetch(MBP_SWITCH_API_URL + '/api/v1/user', requestOptions)
         .then(response => {
             if (!response.ok) {

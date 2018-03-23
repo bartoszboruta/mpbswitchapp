@@ -6,6 +6,7 @@ import ActionButton from 'react-native-action-button';
 import { deviceActions } from "../../actions";
 import { Filter } from "./Filter";
 import { DeviceStatus } from "../../components/DeviceStatus";
+import { bindActionCreators } from "redux";
 
 class Devices extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Devices extends React.Component {
     }
 
     getDevices() {
-        this.props.dispatch(deviceActions.index());
+        this.props.index();
     }
 
     componentDidMount() {
@@ -30,11 +31,7 @@ class Devices extends React.Component {
 
     onStatusUpdateClickHandler(device) {
         const status = device.status.data === "0" ? "1" : "0";
-        this.props.dispatch(deviceActions.updateStatus(device, status));
-    }
-
-    getStatusColor(status) {
-        return status === "0" ? "#696969" : "#5BC088";
+        this.props.updateStatus(device, status);
     }
 
     devices() {
@@ -47,7 +44,7 @@ class Devices extends React.Component {
                     style={styles.item}
                     onPress={ () => this.onStatusUpdateClickHandler(device) }
                     onLongPress ={() => {
-                        this.props.dispatch(deviceActions.select(device._id));
+                        this.props.select(device._id);
                         navigate('Device', { device: device._id })
                     }}
                 >
@@ -138,5 +135,11 @@ const mapStateToProps = (state) => {
     };
 };
 
-const connectedDevicesPage = connect(mapStateToProps)(Devices);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    index: deviceActions.index,
+    updateStatus: deviceActions.updateStatus,
+    select: deviceActions.select,
+}, dispatch);
+
+const connectedDevicesPage = connect(mapStateToProps, mapDispatchToProps)(Devices);
 export { connectedDevicesPage as Devices }

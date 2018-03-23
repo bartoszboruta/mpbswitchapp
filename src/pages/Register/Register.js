@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { userActions } from "../../actions";
+import { bindActionCreators } from 'redux';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 
@@ -46,13 +47,11 @@ class Register extends React.Component {
         };
 
         if (formValues) {
-            this.props.dispatch(userActions.add(formValues));
+            this.props.add(formValues);
         }
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <FormLabel>Email</FormLabel>
@@ -102,5 +101,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const connectedRegisterPage = connect(mapStateToProps)(Register);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    add: userActions.add
+}, dispatch);
+
+const connectedRegisterPage = connect(mapStateToProps, mapDispatchToProps)(Register);
 export { connectedRegisterPage as Register }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Button, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { authActions, userActions } from "../../actions";
 import { Ionicons } from 'react-native-vector-icons';
+import {bindActionCreators} from "redux";
 
 class Profile extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Profile extends React.Component {
     }
 
     componentWillMount() {
-        this.props.dispatch(userActions.show());
+        this.props.show();
     }
 
     componentDidMount() {
@@ -21,7 +22,7 @@ class Profile extends React.Component {
     }
 
     handleLogout() {
-        this.props.dispatch(authActions.logout());
+        this.props.logout();
     }
 
     setAvatarUrl() {
@@ -110,5 +111,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-const connectedProfilePage = connect(mapStateToProps)(Profile);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    logout: authActions.logout,
+    show: userActions.show,
+}, dispatch);
+
+const connectedProfilePage = connect(mapStateToProps, mapDispatchToProps)(Profile);
 export { connectedProfilePage as Profile }

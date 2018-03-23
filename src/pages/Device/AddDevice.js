@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { deviceActions } from "../../actions";
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
@@ -46,7 +47,7 @@ class AddDevice extends React.Component {
         };
 
         if (formValues) {
-            this.props.dispatch(deviceActions.add(formValues));
+            this.props.add(formValues);
             this.props.navigation.goBack(null);
         }
     }
@@ -98,5 +99,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const connectedAddDevicePage = connect(mapStateToProps)(AddDevice);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    add: deviceActions.add
+}, dispatch);
+
+const connectedAddDevicePage = connect(mapStateToProps, mapDispatchToProps)(AddDevice);
 export { connectedAddDevicePage as AddDevice }

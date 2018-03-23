@@ -4,6 +4,7 @@ import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { authActions } from '../../actions';
 import { emailValidate } from '../../utils';
+import { bindActionCreators } from "redux";
 
 class Login extends React.Component {
     constructor(props) {
@@ -64,13 +65,11 @@ class Login extends React.Component {
         });
 
         if (email && password) {
-            this.props.dispatch(authActions.login(email, password));
+            this.props.login(email, password);
         }
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
         return (
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
 
@@ -122,5 +121,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const connectedLoginPage = connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    login: authActions.login,
+}, dispatch);
+
+const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(Login);
 export { connectedLoginPage as Login }

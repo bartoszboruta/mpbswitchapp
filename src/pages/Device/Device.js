@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { deviceActions } from "../../actions";
+import { bindActionCreators } from "redux";
 
 class Device extends React.Component {
     constructor(props) {
@@ -44,12 +45,10 @@ class Device extends React.Component {
     }
 
     handleSubmit() {
-        this.props.dispatch(deviceActions.updateData(this.state.device));
+        this.props.updateData(this.state.device);
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
         return (
             <KeyboardAvoidingView style={styles.container}>
                 <FormLabel>Name</FormLabel>
@@ -87,5 +86,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const connectedDevicePage = connect(mapStateToProps)(Device);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    updateData: deviceActions.updateData
+}, dispatch);
+
+const connectedDevicePage = connect(mapStateToProps, mapDispatchToProps)(Device);
 export { connectedDevicePage as Device }

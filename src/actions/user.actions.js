@@ -14,7 +14,6 @@ function add(fields) {
         userService.add(fields)
             .then(
                 user => {
-                    console.log(1123)
                     if (!user) {
                         dispatch(failure(user));
                         return;
@@ -22,8 +21,6 @@ function add(fields) {
                     dispatch(success(user));
                 },
                 error => {
-                    console.log(34321)
-
                     dispatch(failure(error));
                 }
             )
