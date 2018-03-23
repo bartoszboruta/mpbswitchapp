@@ -3,17 +3,14 @@ import { StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
-import { deviceActions } from "../../actions";
+import { userActions } from "../../actions";
 
-class Device extends React.Component {
+class EditUser extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            device: {
-                status: {
-                }
-            }
+            user: {}
         }
     }
 
@@ -24,27 +21,36 @@ class Device extends React.Component {
         headerTitleStyle: {
             color: 'white'
         },
-        title: 'Device',
+        title: 'EditUser',
         headerLeft: <Ionicons style={{marginLeft: 15}} size={25} name='md-arrow-back' onPress={ () => {navigation.goBack(null)} }  />,
     });
 
     componentDidMount() {
         this.setState({
-            device: this.props.device.selected
+            user: this.props.user
         })
     }
 
     onNameChangeHandler(e) {
         this.setState({
-            device: {
-                ...this.state.device,
+            user: {
+                ...this.state.user,
                 name: e
             }
         });
     }
 
+    onEmailChangeHandler(e) {
+        this.setState({
+            user: {
+                ...this.state.user,
+                email: e
+            }
+        });
+    }
+
     handleSubmit() {
-        this.props.dispatch(deviceActions.updateData(this.state.device));
+        this.props.dispatch(userActions.edit(this.state.user));
     }
 
     render() {
@@ -58,7 +64,15 @@ class Device extends React.Component {
                     name="name"
                     returnKeyType="next"
                     onChangeText={this.onNameChangeHandler.bind(this)}
-                    value={this.state.device.name}
+                    value={this.state.user.name}
+                />
+                <FormLabel>Email</FormLabel>
+                <FormInput
+                    underlineColorAndroid="#cccccc"
+                    name="email"
+                    returnKeyType="next"
+                    onChangeText={this.onEmailChangeHandler.bind(this)}
+                    value={this.state.user.email}
                 />
                 <Button
                     buttonStyle={styles.button}
@@ -81,11 +95,11 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => {
-    const { device } = state;
+    const { user } = state;
     return {
-        device
+        user
     };
 };
 
-const connectedDevicePage = connect(mapStateToProps)(Device);
-export { connectedDevicePage as Device }
+const connectedEditUserPage = connect(mapStateToProps)(EditUser);
+export { connectedEditUserPage as EditUser }

@@ -5,6 +5,7 @@ import { Ionicons } from 'react-native-vector-icons';
 import ActionButton from 'react-native-action-button';
 import { deviceActions } from "../../actions";
 import { Filter } from "./Filter";
+import { DeviceStatus } from "../../components/DeviceStatus";
 
 class Devices extends React.Component {
     constructor(props) {
@@ -12,7 +13,7 @@ class Devices extends React.Component {
     }
 
     getDevices() {
-        this.props.dispatch(deviceActions.index(this.props.device.filterQuery));
+        this.props.dispatch(deviceActions.index());
     }
 
     componentDidMount() {
@@ -29,7 +30,7 @@ class Devices extends React.Component {
 
     onStatusUpdateClickHandler(device) {
         const status = device.status.data === "0" ? "1" : "0";
-        this.props.dispatch(deviceActions.updateStatus(device, status, this.props.device.filterQuery));
+        this.props.dispatch(deviceActions.updateStatus(device, status));
     }
 
     getStatusColor(status) {
@@ -40,7 +41,6 @@ class Devices extends React.Component {
         const { navigate } = this.props.navigation;
 
         return this.props.device.filteredDevices.map((device, key) => {
-            console.log(this.props.device.filterQuery);
             return (
                 <TouchableOpacity
                     key={key}
@@ -51,10 +51,10 @@ class Devices extends React.Component {
                         navigate('Device', { device: device._id })
                     }}
                 >
-                    <Ionicons
-                        name="ios-power"
-                        style={ StyleSheet.flatten([styles.statusIcon, { color: this.getStatusColor(device.status.data) }]) }
-                    />
+                    {
+                        <DeviceStatus status={device.status.data} />
+                    }
+
                     <Text style={ styles.deviceName } >
                         {
                             device.name
@@ -72,7 +72,7 @@ class Devices extends React.Component {
                 <Filter />
                 <ScrollView refreshControl={
                     <RefreshControl refreshing={this.props.device.loading}
-                        onRefresh={ () => this.onRefreshHandler }
+                        onRefresh={ this.onRefreshHandler.bind(this) }
                     />
                 }>
                     <View style={styles.list}>
@@ -82,13 +82,10 @@ class Devices extends React.Component {
                     </View>
                 </ScrollView>
                 <ActionButton buttonColor="rgba(231,76,60,1)">
-                    <ActionButton.Item buttonColor='#1abc9c' title="Refresh" onPress={() => this.onRefreshClickHandler }>
+                    <ActionButton.Item buttonColor='#1abc9c' title="Refresh" onPress={ this.onRefreshClickHandler.bind(this) }>
                         <Ionicons name="ios-refresh" style={ styles.actionButtonIcon }/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Switch all" onPress={() => {}}>
-                        <Ionicons name="ios-power" style={ styles.actionButtonIcon }/>
-                    </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#1abc9c' title="Add device" onPress={() => {navigate('AddDevices')}}>
+                    <ActionButton.Item buttonColor='#0085c2' title="Add device" onPress={() => {navigate('AddDevices')}}>
                         <Ionicons name="ios-add" style={ styles.actionButtonIcon }/>
                     </ActionButton.Item>
                 </ActionButton>

@@ -77,6 +77,7 @@ class Login extends React.Component {
                 <View>
                     <FormLabel>Email</FormLabel>
                     <FormInput
+                        underlineColorAndroid="#cccccc"
                         name="email"
                         onEndEditing={this.handleEmailEndEditing.bind(this)}
                         onChangeText={this.handleEmailChange.bind(this)}
@@ -85,6 +86,7 @@ class Login extends React.Component {
 
                     <FormLabel>Password</FormLabel>
                     <FormInput
+                        underlineColorAndroid="#cccccc"
                         inputStyle={styles.button}
                         name="password"
                         onChangeText={this.handlePasswordChange.bind(this)}

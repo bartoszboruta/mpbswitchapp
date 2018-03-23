@@ -57,18 +57,21 @@ class Register extends React.Component {
             <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <FormLabel>Email</FormLabel>
                 <FormInput
+                    underlineColorAndroid="#cccccc"
                     inputStyle={styles.button}
                     name="email"
                     onChangeText={this.handleEmailChange.bind(this)}
                 />
                 <FormLabel>Name</FormLabel>
                 <FormInput
+                    underlineColorAndroid="#cccccc"
                     name="name"
                     returnKeyType="next"
                     onChangeText={this.handleNameChange.bind(this)}
                 />
                 <FormLabel>Password</FormLabel>
                 <FormInput
+                    underlineColorAndroid="#cccccc"
                     inputStyle={styles.button}
                     name="password"
                     onChangeText={this.handlePasswordChange.bind(this)}

@@ -6,7 +6,8 @@ export const deviceActions = {
     index,
     filter,
     select,
-    updateStatus
+    updateStatus,
+    updateData,
 };
 
 function select(deviceId) {
@@ -43,7 +44,7 @@ function add(fields) {
     }
 }
 
-function index(filterQuery) {
+function index() {
     return dispatch => {
         dispatch(request());
 
@@ -58,7 +59,7 @@ function index(filterQuery) {
                         return;
                     }
                     dispatch(success(devices));
-                    dispatch({ type: deviceTypes.FILTER, payload: filterQuery });
+                    dispatch({ type: deviceTypes.REFILTER });
                 },
                 error => {
                     dispatch(failure(error));
@@ -77,7 +78,7 @@ function index(filterQuery) {
     }
 }
 
-function updateStatus(device, status, filterQuery) {
+function updateStatus(device, status) {
     return dispatch => {
         dispatch(request());
 
@@ -86,7 +87,7 @@ function updateStatus(device, status, filterQuery) {
                 status => {
                     if (!device.error) {
                         dispatch(success(device, status));
-                        dispatch({ type: deviceTypes.FILTER, payload: filterQuery });
+                        dispatch({ type: deviceTypes.REFILTER });
                     }
                 },
                 error => {
@@ -103,6 +104,34 @@ function updateStatus(device, status, filterQuery) {
     }
     function failure() {
         return { type: deviceTypes.UPDATE_STATUS_FAILURE }
+    }
+}
+function updateData(device) {
+    return dispatch => {
+        dispatch(request());
+
+        deviceService.updateData(device)
+            .then(
+                device => {
+                    if (!device.error) {
+                        dispatch(success(device));
+                        dispatch({ type: deviceTypes.REFILTER });
+                    }
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            )
+    };
+
+    function request() {
+        return { type: deviceTypes.UPDATE_DATA_REQUEST }
+    }
+    function success(device) {
+        return { type: deviceTypes.UPDATE_DATA_SUCCESS, payload: { device } }
+    }
+    function failure() {
+        return { type: deviceTypes.UPDATE_DATA_FAILURE }
     }
 }
 

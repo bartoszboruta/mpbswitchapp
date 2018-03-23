@@ -3,7 +3,7 @@ import { StackNavigator, TabNavigator } from 'react-navigation';
 import { Home }from '../pages/Home';
 import { Login } from '../pages/Login';
 import { Register } from '../pages/Register';
-import { Profile } from '../pages/Profile';
+import { Profile, EditUser } from '../pages/Profile';
 import { Devices, AddDevice, Device } from '../pages/Device';
 
 export const _LoggedOut = StackNavigator(
@@ -45,6 +45,10 @@ export const _Device = StackNavigator({
 
 export const _AddDevice = StackNavigator({
     AddDevice: { screen: AddDevice },
+});
+
+export const _EditUser = StackNavigator({
+    EditUser: { screen: EditUser },
 });
 
 export const _LoggedIn = TabNavigator(
@@ -99,6 +103,12 @@ export const createRootNavigator = (loggedIn = false) => {
             },
             Device: {
                 screen: _Device,
+                navigationOptions: {
+                    gesturesEnabled: false,
+                }
+            },
+            EditUser: {
+                screen: _EditUser,
                 navigationOptions: {
                     gesturesEnabled: false,
                 }

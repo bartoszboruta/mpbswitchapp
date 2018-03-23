@@ -39,7 +39,7 @@ class Profile extends React.Component {
                     <TouchableOpacity style={styles.actionItemContainer} onPress={this.handleLogout.bind(this)}>
                         <Ionicons name="md-log-out" style={styles.actionItem}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.actionItemContainer}>
+                    <TouchableOpacity style={styles.actionItemContainer} onPress={() => navigate('EditUser')}>
                         <Ionicons name="ios-settings" style={styles.actionItem}/>
                     </TouchableOpacity>
                 </View>

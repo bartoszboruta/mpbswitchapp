@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { connect } from 'react-redux';
-import {deviceActions} from "../../actions";
+import { deviceActions } from "../../actions";
 import { Ionicons } from 'react-native-vector-icons';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 
@@ -47,29 +47,29 @@ class AddDevice extends React.Component {
 
         if (formValues) {
             this.props.dispatch(deviceActions.add(formValues));
+            this.props.navigation.goBack(null);
         }
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
         return (
             <View style={styles.container}>
                 <FormLabel>Name</FormLabel>
                 <FormInput
+                    underlineColorAndroid="#cccccc"
                     name="name"
                     returnKeyType="next"
                     onChangeText={this.handleNameChange.bind(this)}
                 />
                 <FormLabel>Serial</FormLabel>
                 <FormInput
-                    inputStyle={styles.button}
+                    underlineColorAndroid="#cccccc"
                     name="serial"
                     onChangeText={this.handleSerialChange.bind(this)}
                 />
                 <FormLabel>Password</FormLabel>
                 <FormInput
-                    inputStyle={styles.button}
+                    underlineColorAndroid="#cccccc"
                     name="password"
                     onChangeText={this.handlePasswordChange.bind(this)}
                     secureTextEntry
@@ -96,7 +96,7 @@ const mapStateToProps = (state) => {
     return {
         user
     };
-}
+};
 
 const connectedAddDevicePage = connect(mapStateToProps)(AddDevice);
 export { connectedAddDevicePage as AddDevice }

@@ -3,6 +3,7 @@ import { userService } from "../services";
 
 export const userActions = {
     add,
+    edit,
     show
 };
 
@@ -66,5 +67,35 @@ function show() {
     }
     function failure() {
         return { type: userTypes.GET_FAILURE }
+    }
+}
+
+function edit(user) {
+    return dispatch => {
+        dispatch(request());
+
+        userService.edit(user)
+            .then(
+                user => {
+                    if (!user) {
+                        dispatch(failure(user));
+                        return;
+                    }
+                    dispatch(success(user));
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            )
+    };
+
+    function request() {
+        return { type: userTypes.EDIT_REQUEST }
+    }
+    function success(user) {
+        return { type: userTypes.EDIT_SUCCESS, payload: user }
+    }
+    function failure() {
+        return { type: userTypes.EDIT_FAILURE }
     }
 }
