@@ -6,7 +6,8 @@ export const deviceActions = {
     index,
     filter,
     select,
-    updateStatus
+    updateStatus,
+    updateData,
 };
 
 function select(deviceId) {
@@ -27,7 +28,6 @@ function add(fields) {
                     }
                 },
                 error => {
-                    console.log('err', error);
                     dispatch(failure(error));
                 }
             )
@@ -59,6 +59,7 @@ function index() {
                         return;
                     }
                     dispatch(success(devices));
+                    dispatch({ type: deviceTypes.REFILTER });
                 },
                 error => {
                     dispatch(failure(error));
@@ -86,6 +87,7 @@ function updateStatus(device, status) {
                 status => {
                     if (!device.error) {
                         dispatch(success(device, status));
+                        dispatch({ type: deviceTypes.REFILTER });
                     }
                 },
                 error => {
@@ -102,6 +104,34 @@ function updateStatus(device, status) {
     }
     function failure() {
         return { type: deviceTypes.UPDATE_STATUS_FAILURE }
+    }
+}
+function updateData(device) {
+    return dispatch => {
+        dispatch(request());
+
+        deviceService.updateData(device)
+            .then(
+                device => {
+                    if (!device.error) {
+                        dispatch(success(device));
+                        dispatch({ type: deviceTypes.REFILTER });
+                    }
+                },
+                error => {
+                    dispatch(failure(error));
+                }
+            )
+    };
+
+    function request() {
+        return { type: deviceTypes.UPDATE_DATA_REQUEST }
+    }
+    function success(device) {
+        return { type: deviceTypes.UPDATE_DATA_SUCCESS, payload: { device } }
+    }
+    function failure() {
+        return { type: deviceTypes.UPDATE_DATA_FAILURE }
     }
 }
 

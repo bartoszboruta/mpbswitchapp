@@ -4,8 +4,52 @@ import { MBP_SWITCH_API_URL } from "../../config";
 export const deviceService = {
     index,
     add,
+    updateData,
     updateStatus
 };
+
+async function updateData(device) {
+    let auth = await AsyncStorage.getItem('auth');
+    if (!auth) {
+        return {
+            error: true,
+            errorMessage: 'Unauthorized',
+            errorStatus: 401
+        };
+    }
+
+    auth = JSON.parse(auth);
+
+    const token = auth.token;
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        },
+        body: JSON.stringify({
+            name: device.name
+        })
+    };
+
+    return fetch(MBP_SWITCH_API_URL + '/api/v1/device/' + device._id, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                return {
+                    error: true,
+                    errorMessage: response._bodyText,
+                    errorStatus: response.status
+                };
+            }
+
+            return response.json();
+        })
+        .then((devices) => {
+            return devices;
+        })
+        .catch((error) => {
+        });
+}
 
 async function add(fields) {
     let auth = await AsyncStorage.getItem('auth');
@@ -49,7 +93,6 @@ async function add(fields) {
             return devices;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 
@@ -87,7 +130,6 @@ async function index() {
             return devices;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }
 
@@ -132,6 +174,5 @@ async function updateStatus(device, status) {
             return device;
         })
         .catch((error) => {
-            console.log('error', error);
         });
 }

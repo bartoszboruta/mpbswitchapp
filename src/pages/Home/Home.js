@@ -2,7 +2,7 @@ import React from 'react';
 import {AsyncStorage, StyleSheet, View} from 'react-native';
 import { Button } from 'react-native-elements'
 import { connect } from 'react-redux';
-import Logo from "../../components/Logo/Logo";
+import Logo from '../../components/Logo/Logo';
 
 class Home extends React.Component {
 
@@ -16,12 +16,12 @@ class Home extends React.Component {
                     <Button
                         buttonStyle={styles.button}
                         onPress={() => navigate('Login')}
-                        title="Login"
+                        title='Login'
                     />
                     <Button
                         buttonStyle={styles.button}
                         onPress={() => navigate('Register')}
-                        title="Register"
+                        title='Register'
                     />
                 </View>
             </View>
@@ -40,12 +40,12 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const {} = state;
     return {
 
     };
-}
+};
 
 const connectedHomePage = connect(mapStateToProps)(Home);
 export { connectedHomePage as Home }

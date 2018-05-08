@@ -6,7 +6,7 @@ import { device } from './device.reducer';
 const rootReducer = combineReducers({
     auth,
     user,
-    device
+    device,
 });
 
 export default rootReducer;

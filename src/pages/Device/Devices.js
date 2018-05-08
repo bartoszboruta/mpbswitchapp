@@ -3,23 +3,21 @@ import { StyleSheet, View, Text, ScrollView, TouchableOpacity, RefreshControl } 
 import { connect } from 'react-redux';
 import { Ionicons } from 'react-native-vector-icons';
 import ActionButton from 'react-native-action-button';
-import { deviceActions } from "../../actions";
-import { Filter } from "./Filter";
+import { deviceActions } from '../../actions';
+import { Filter } from './Filter';
+import { DeviceStatus } from '../../components/DeviceStatus';
+import { bindActionCreators } from 'redux';
 
 class Devices extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    componentDidMount() {
-        this.props.dispatch(deviceActions.filter());
-    }
-
     getDevices() {
-        this.props.dispatch(deviceActions.index());
+        this.props.index();
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.getDevices();
     }
 
@@ -32,16 +30,36 @@ class Devices extends React.Component {
     }
 
     onStatusUpdateClickHandler(device) {
-        const status = device.status.data === "0" ? "1" : "0";
-        this.props.dispatch(deviceActions.updateStatus(device, status));
+        const status = device.status.data === '0' ? '1' : '0';
+        this.props.updateStatus(device, status);
     }
 
-    getStatusColor(status) {
-        if (this.props.device.loading) {
-            // return '#fafad2';
-        }
+    devices() {
+        const { navigate } = this.props.navigation;
 
-        return status === "0" ? "#696969" : "#5BC088";
+        return this.props.device.filteredDevices.map((device, key) => {
+            return (
+                <TouchableOpacity
+                    key={key}
+                    style={styles.item}
+                    onPress={ () => this.onStatusUpdateClickHandler(device) }
+                    onLongPress ={() => {
+                        this.props.select(device._id);
+                        navigate('Device', { device: device._id })
+                    }}
+                >
+                    {
+                        <DeviceStatus status={device.status.data} />
+                    }
+
+                    <Text style={ styles.deviceName } >
+                        {
+                            device.name
+                        }
+                    </Text>
+                </TouchableOpacity>
+            )
+        })
     }
 
     render() {
@@ -56,41 +74,16 @@ class Devices extends React.Component {
                 }>
                     <View style={styles.list}>
                         {
-                            this.props.device.devices.map((device, key) => {
-                                return (
-                                    <TouchableOpacity
-                                        key={key}
-                                        style={styles.item}
-                                        onPress={ this.onStatusUpdateClickHandler.bind(this, device) }
-e                                       onLongPress ={() => {
-                                            this.props.dispatch(deviceActions.select(device._id));
-                                            navigate('Device', { device: device._id })
-                                        }}
-                                    >
-                                        <Ionicons
-                                            name="ios-power"
-                                            style={ StyleSheet.flatten([styles.statusIcon, { color: this.getStatusColor(device.status.data) }]) }
-                                        />
-                                        <Text style={ styles.deviceName } >
-                                            {
-                                                device.name
-                                            }
-                                        </Text>
-                                    </TouchableOpacity>
-                                )
-                            })
+                            this.devices()
                         }
                     </View>
                 </ScrollView>
-                <ActionButton buttonColor="rgba(231,76,60,1)">
-                    <ActionButton.Item buttonColor='#1abc9c' title="Refresh" onPress={ this.onRefreshClickHandler.bind(this) }>
-                        <Ionicons name="ios-refresh" style={ styles.actionButtonIcon }/>
+                <ActionButton buttonColor='rgba(231,76,60,1)'>
+                    <ActionButton.Item buttonColor='#1abc9c' title='Refresh' onPress={ this.onRefreshClickHandler.bind(this) }>
+                        <Ionicons name='ios-refresh' style={ styles.actionButtonIcon }/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#3498db' title="Switch all" onPress={() => {}}>
-                        <Ionicons name="ios-power" style={ styles.actionButtonIcon }/>
-                    </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#1abc9c' title="Add device" onPress={() => {navigate('AddDevices')}}>
-                        <Ionicons name="ios-add" style={ styles.actionButtonIcon }/>
+                    <ActionButton.Item buttonColor='#0085c2' title='Add device' onPress={() => {navigate('AddDevices')}}>
+                        <Ionicons name='ios-add' style={ styles.actionButtonIcon }/>
                     </ActionButton.Item>
                 </ActionButton>
             </View>
@@ -115,6 +108,7 @@ const styles = StyleSheet.create({
     item: {
         width: '48%',
         borderWidth: 1,
+        borderRadius: 5,
         borderColor: 'lightgray',
         alignItems: 'center',
         justifyContent: 'center',
@@ -133,13 +127,19 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { user, device } = state;
     return {
         user,
         device
     };
-}
+};
 
-const connectedDevicesPage = connect(mapStateToProps)(Devices);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    index: deviceActions.index,
+    updateStatus: deviceActions.updateStatus,
+    select: deviceActions.select,
+}, dispatch);
+
+const connectedDevicesPage = connect(mapStateToProps, mapDispatchToProps)(Devices);
 export { connectedDevicesPage as Devices }

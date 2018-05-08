@@ -3,8 +3,8 @@ import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { authActions } from '../../actions';
-import Logo from '../../components/Logo/Logo';
 import { emailValidate } from '../../utils';
+import { bindActionCreators } from 'redux';
 
 class Login extends React.Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class Login extends React.Component {
         if (!emailValidate(e.nativeEvent.text)) {
             this.setState({
                 error: true,
-                errorMessage: "Email not valid"
+                errorMessage: 'Email not valid'
             })
         }
     }
@@ -39,7 +39,7 @@ class Login extends React.Component {
         const { email, password } = this.state;
 
         if (!emailValidate(email)) {
-            let errorMessage = "Email not valid"
+            let errorMessage = 'Email not valid'
             this.setState({
                 error: true,
                 errorMessage: errorMessage
@@ -49,7 +49,7 @@ class Login extends React.Component {
         }
 
         if (!password) {
-            let errorMessage = "Password is required";
+            let errorMessage = 'Password is required';
             this.setState({
                 error: true,
                 errorMessage: errorMessage
@@ -65,31 +65,29 @@ class Login extends React.Component {
         });
 
         if (email && password) {
-            this.props.dispatch(authActions.login(email, password));
+            this.props.login(email, password);
         }
     }
 
     render() {
-        const { navigate } = this.props.navigation;
-
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
-
-                <Logo />
+            <KeyboardAvoidingView behavior='padding' style={styles.container}>
 
                 <View>
                     <FormLabel>Email</FormLabel>
                     <FormInput
-                        name="email"
+                        underlineColorAndroid='#cccccc'
+                        name='email'
                         onEndEditing={this.handleEmailEndEditing.bind(this)}
                         onChangeText={this.handleEmailChange.bind(this)}
-                        returnKeyType="next"
+                        returnKeyType='next'
                     />
 
                     <FormLabel>Password</FormLabel>
                     <FormInput
+                        underlineColorAndroid='#cccccc'
                         inputStyle={styles.button}
-                        name="password"
+                        name='password'
                         onChangeText={this.handlePasswordChange.bind(this)}
                         secureTextEntry
                     />
@@ -97,7 +95,7 @@ class Login extends React.Component {
                     <Button
                         buttonStyle={styles.button}
                         onPress={this.handleSubmit.bind(this)}
-                        title="SUBMIT"
+                        title='SUBMIT'
                     />
                 </View>
             </KeyboardAvoidingView>
@@ -116,12 +114,16 @@ const styles = StyleSheet.create({
     }
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { auth } = state;
     return {
         auth
     };
-}
+};
 
-const connectedLoginPage = connect(mapStateToProps)(Login);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    login: authActions.login,
+}, dispatch);
+
+const connectedLoginPage = connect(mapStateToProps, mapDispatchToProps)(Login);
 export { connectedLoginPage as Login }

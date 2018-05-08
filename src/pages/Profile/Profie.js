@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, View, Button, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { authActions, userActions } from "../../actions";
+import { authActions, userActions } from '../../actions';
 import { Ionicons } from 'react-native-vector-icons';
+import {bindActionCreators} from 'redux';
 
 class Profile extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Profile extends React.Component {
     }
 
     componentWillMount() {
-        this.props.dispatch(userActions.show());
+        this.props.show();
     }
 
     componentDidMount() {
@@ -21,7 +22,7 @@ class Profile extends React.Component {
     }
 
     handleLogout() {
-        this.props.dispatch(authActions.logout());
+        this.props.logout();
     }
 
     setAvatarUrl() {
@@ -37,10 +38,10 @@ class Profile extends React.Component {
             <View style={styles.container}>
                 <View style={styles.action}>
                     <TouchableOpacity style={styles.actionItemContainer} onPress={this.handleLogout.bind(this)}>
-                        <Ionicons name="md-log-out" style={styles.actionItem}/>
+                        <Ionicons name='md-log-out' style={styles.actionItem}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.actionItemContainer}>
-                        <Ionicons name="ios-settings" style={styles.actionItem}/>
+                    <TouchableOpacity style={styles.actionItemContainer} onPress={() => navigate('EditUser')}>
+                        <Ionicons name='ios-settings' style={styles.actionItem}/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.summary}>
@@ -103,12 +104,17 @@ const styles = StyleSheet.create({
     },
 });
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
     const { user } = state;
     return {
         user,
     };
-}
+};
 
-const connectedProfilePage = connect(mapStateToProps)(Profile);
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    logout: authActions.logout,
+    show: userActions.show,
+}, dispatch);
+
+const connectedProfilePage = connect(mapStateToProps, mapDispatchToProps)(Profile);
 export { connectedProfilePage as Profile }
