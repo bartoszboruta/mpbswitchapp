@@ -1,2 +1,2 @@
-export * from './Profie';
-export * from './EditUser';
+export * from './Profie'
+export * from './EditUser'

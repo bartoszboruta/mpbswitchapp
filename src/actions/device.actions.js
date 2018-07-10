@@ -1,142 +1,99 @@
-import { deviceTypes, authTypes } from "../types";
-import { deviceService } from "../services";
+import { deviceTypes, authTypes } from '../types'
+import { deviceService } from '../services'
+
+const select = deviceId => {
+  return dispatch => {
+    dispatch({ type: deviceTypes.SELECT, payload: deviceId })
+  }
+}
+
+const add = fields => {
+  return dispatch => {
+    dispatch({ type: deviceTypes.ADD_REQUEST })
+
+    deviceService.add(fields).then(
+      device => {
+        if (!device.error) {
+          dispatch({ type: deviceTypes.ADD_SUCCESS, payload: device })
+        }
+      },
+      error => {
+        dispatch({ type: deviceTypes.ADD_FAILURE })
+      },
+    )
+  }
+}
+
+const index = () => {
+  return dispatch => {
+    dispatch({ type: deviceTypes.INDEX_REQUEST })
+
+    deviceService.index().then(
+      devices => {
+        if (devices.error) {
+          dispatch(failure())
+          if (devices.errorStatus === 401) {
+            dispatch({ type: authTypes.LOGOUT })
+          }
+          return
+        }
+        dispatch({ type: deviceTypes.INDEX_SUCCESS, payload: devices })
+        dispatch({ type: deviceTypes.REFILTER })
+      },
+      error => {
+        dispatch({ type: deviceTypes.INDEX_FAILURE })
+      },
+    )
+  }
+}
+
+const updateStatus = (device, status) => {
+  return dispatch => {
+    dispatch({ type: deviceTypes.UPDATE_STATUS_REQUEST })
+
+    deviceService.updateStatus(device, status).then(
+      status => {
+        if (!device.error) {
+          dispatch({ type: deviceTypes.UPDATE_STATUS_SUCCESS, payload: { device, status } })
+          dispatch({ type: deviceTypes.REFILTER })
+        }
+      },
+      error => {
+        dispatch({ type: deviceTypes.UPDATE_STATUS_FAILURE })
+      },
+    )
+  }
+}
+
+const updateData = device => {
+  return dispatch => {
+    dispatch({ type: deviceTypes.UPDATE_DATA_REQUEST })
+
+    deviceService.updateData(device).then(
+      device => {
+        if (!device.error) {
+          dispatch({ type: deviceTypes.UPDATE_DATA_SUCCESS, payload: { device } })
+          dispatch({ type: deviceTypes.REFILTER })
+        }
+      },
+      error => {
+        dispatch({ type: deviceTypes.UPDATE_DATA_FAILURE })
+      },
+    )
+  }
+}
+
+const filter = query => {
+  return dispatch => {
+    dispatch({ type: deviceTypes.FILTER, payload: query })
+  }
+}
 
 export const deviceActions = {
-    add,
-    index,
-    filter,
-    select,
-    updateStatus,
-    updateData,
-};
-
-function select(deviceId) {
-    return dispatch => {
-        dispatch({type: deviceTypes.SELECT, payload: deviceId})
-    }
-}
-
-function add(fields) {
-    return dispatch => {
-        dispatch(request());
-
-        deviceService.add(fields)
-            .then(
-                device => {
-                    if (!device.error) {
-                        dispatch(success(device));
-                    }
-                },
-                error => {
-                    dispatch(failure(error));
-                }
-            )
-    };
-
-    function request() {
-        return { type: deviceTypes.ADD_REQUEST }
-    }
-    function success(device) {
-        return { type: deviceTypes.ADD_SUCCESS, payload: device }
-    }
-    function failure() {
-        return { type: deviceTypes.ADD_FAILURE }
-    }
-}
-
-function index() {
-    return dispatch => {
-        dispatch(request());
-
-        deviceService.index()
-            .then(
-                devices => {
-                    if (devices.error) {
-                        dispatch(failure());
-                        if (devices.errorStatus === 401) {
-                            dispatch({ type: authTypes.LOGOUT });
-                        }
-                        return;
-                    }
-                    dispatch(success(devices));
-                    dispatch({ type: deviceTypes.REFILTER });
-                },
-                error => {
-                    dispatch(failure(error));
-                }
-            )
-    };
-
-    function request() {
-        return { type: deviceTypes.INDEX_REQUEST }
-    }
-    function success(devices) {
-        return { type: deviceTypes.INDEX_SUCCESS, payload: devices }
-    }
-    function failure() {
-        return { type: deviceTypes.INDEX_FAILURE }
-    }
-}
-
-function updateStatus(device, status) {
-    return dispatch => {
-        dispatch(request());
-
-        deviceService.updateStatus(device, status)
-            .then(
-                status => {
-                    if (!device.error) {
-                        dispatch(success(device, status));
-                        dispatch({ type: deviceTypes.REFILTER });
-                    }
-                },
-                error => {
-                    dispatch(failure(error));
-                }
-            )
-    };
-
-    function request() {
-        return { type: deviceTypes.UPDATE_STATUS_REQUEST }
-    }
-    function success(device) {
-        return { type: deviceTypes.UPDATE_STATUS_SUCCESS, payload: { device, status } }
-    }
-    function failure() {
-        return { type: deviceTypes.UPDATE_STATUS_FAILURE }
-    }
-}
-function updateData(device) {
-    return dispatch => {
-        dispatch(request());
-
-        deviceService.updateData(device)
-            .then(
-                device => {
-                    if (!device.error) {
-                        dispatch(success(device));
-                        dispatch({ type: deviceTypes.REFILTER });
-                    }
-                },
-                error => {
-                    dispatch(failure(error));
-                }
-            )
-    };
-
-    function request() {
-        return { type: deviceTypes.UPDATE_DATA_REQUEST }
-    }
-    function success(device) {
-        return { type: deviceTypes.UPDATE_DATA_SUCCESS, payload: { device } }
-    }
-    function failure() {
-        return { type: deviceTypes.UPDATE_DATA_FAILURE }
-    }
-}
-
-function filter(query) {
-    return dispatch => {
-        dispatch({type: deviceTypes.FILTER, payload: query})
-    };
+  add,
+  index,
+  filter,
+  select,
+  updateStatus,
+  updateData,
 }
