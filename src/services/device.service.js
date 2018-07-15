@@ -6,6 +6,7 @@ export const deviceService = {
   add,
   updateData,
   updateStatus,
+  removeDevice,
 }
 
 async function updateData(device) {
@@ -91,6 +92,45 @@ async function add(fields) {
     })
     .then(devices => {
       return devices
+    })
+    .catch(error => {})
+}
+
+async function removeDevice(device) {
+  let auth = await AsyncStorage.getItem('auth')
+  if (!auth) {
+    return {
+      error: true,
+      errorMessage: 'Unauthorized',
+      errorStatus: 401,
+    }
+  }
+
+  auth = JSON.parse(auth)
+
+  const token = auth.token
+  const requestOptions = {
+    method: 'delete',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  }
+
+  return fetch(MBP_SWITCH_API_URL + '/api/v1/device/' + device._id, requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        return {
+          error: true,
+          errorMessage: response._bodyText,
+          errorStatus: response.status,
+        }
+      }
+
+      return response.json()
+    })
+    .then(() => {
+      return {}
     })
     .catch(error => {})
 }

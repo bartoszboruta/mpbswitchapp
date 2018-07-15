@@ -1,5 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import FlashMessage from 'react-native-flash-message'
+import { View } from 'react-native'
+
 import { createRootNavigator } from './src/utils'
 import { authActions } from './src/actions'
 
@@ -10,7 +13,12 @@ class Main extends React.Component {
 
   render() {
     const Layout = createRootNavigator(this.props.auth.loggedIn)
-    return <Layout />
+    return (
+      <View style={{ flex: 1 }}>
+        <Layout />
+        <FlashMessage position="top" />
+      </View>
+    )
   }
 }
 

@@ -83,6 +83,21 @@ const updateData = device => {
   }
 }
 
+const removeDevice = device => {
+  return dispatch => {
+    dispatch({ type: deviceTypes.REMOVE_REQUEST })
+
+    deviceService.removeDevice(device).then(
+      () => {
+        dispatch({ type: deviceTypes.REMOVE_SUCCESS, payload: { device } })
+      },
+      error => {
+        dispatch({ type: deviceTypes.REMOVE_FAILURE })
+      },
+    )
+  }
+}
+
 const filter = query => {
   return dispatch => {
     dispatch({ type: deviceTypes.FILTER, payload: query })
@@ -96,4 +111,5 @@ export const deviceActions = {
   select,
   updateStatus,
   updateData,
+  removeDevice,
 }

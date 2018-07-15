@@ -1,5 +1,6 @@
 import { deviceTypes } from '../types'
 import _ from 'lodash'
+import { showMessage, hideMessage } from 'react-native-flash-message'
 
 const initialState = {
   devices: [],
@@ -15,6 +16,11 @@ const filterList = (list, query) =>
 export function device(state = initialState, action) {
   switch (action.type) {
     case deviceTypes.ADD_SUCCESS:
+      showMessage({
+        message: 'Device has been successfully added',
+        type: 'success',
+      })
+
       return {
         ...state,
         devices: [...state.devices, action.payload],
@@ -68,6 +74,10 @@ export function device(state = initialState, action) {
         loading: false,
       }
     case deviceTypes.UPDATE_DATA_SUCCESS:
+      showMessage({
+        message: 'Device has been successfully updated',
+        type: 'success',
+      })
       return {
         ...state,
         devices: _.map(state.devices, device => {
@@ -77,6 +87,38 @@ export function device(state = initialState, action) {
         }),
       }
     case deviceTypes.UPDATE_STATUS_FAILURE:
+      showMessage({
+        message: 'An error occurred while updating device',
+        type: 'error',
+      })
+      return {
+        ...state,
+        loading: false,
+      }
+    case deviceTypes.REMOVE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case deviceTypes.REMOVE_SUCCESS:
+      showMessage({
+        message: 'Device has been successfully deleted',
+        type: 'success',
+      })
+      console.log(
+        `device id ${action.payload.device.id} to remove, `,
+        _.remove(state.devices, { _id: action.payload.device._id }),
+      )
+      return {
+        ...state,
+        devices: _.remove(state.devices, { _id: action.payload.device._id }),
+        loading: false,
+      }
+    case deviceTypes.REMOVE_FAILURE:
+      showMessage({
+        message: 'An error occurred while deleting device',
+        type: 'error',
+      })
       return {
         ...state,
         loading: false,

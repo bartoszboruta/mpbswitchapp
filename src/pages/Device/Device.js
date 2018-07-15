@@ -52,6 +52,10 @@ class Device extends React.Component {
     this.props.updateData(this.state.device)
   }
 
+  handleDelete() {
+    this.props.removeDevice(this.state.device)
+  }
+
   render() {
     return (
       <KeyboardAvoidingView style={styles.container}>
@@ -64,6 +68,11 @@ class Device extends React.Component {
           value={this.state.device.name}
         />
         <Button buttonStyle={styles.button} onPress={this.handleSubmit.bind(this)} title="SUBMIT" />
+        <Button
+          buttonStyle={styles.buttonDdanger}
+          onPress={this.handleDelete.bind(this)}
+          title="DELETE"
+        />
       </KeyboardAvoidingView>
     )
   }
@@ -72,6 +81,9 @@ class Device extends React.Component {
 const styles = StyleSheet.create({
   button: {
     marginBottom: 10,
+  },
+  buttonDdanger: {
+    backgroundColor: '#d9534f',
   },
   container: {
     flex: 1,
@@ -90,6 +102,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       updateData: deviceActions.updateData,
+      removeDevice: deviceActions.removeDevice,
     },
     dispatch,
   )
